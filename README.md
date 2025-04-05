@@ -1,23 +1,52 @@
 # MCTS Tracker MCP Server
 
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Model Context Protocol (MCP) server that provides real-time Milwaukee County Transit System (MCTS) bus information.
 
-## Overview
+## What is MCP?
 
-This MCP server integrates with the Milwaukee County Transit System (MCTS) API to provide real-time bus arrival predictions. The server exposes a tool that allows AI assistants to retrieve bus arrival times for specific stops in Milwaukee, enhancing the ability of AI models to provide transit information to users.
+The [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) is an open standard that enables AI assistants to safely interact with external tools and data sources. This server implements the MCP specification to provide real-time transit information that can be accessed by compatible AI models like Claude, GPT, and others.
+
+## Features
+
+- 🚌 **Real-time Bus Predictions**: Get accurate arrival times for any MCTS bus stop
+- 🔌 **MCP Compatibility**: Works with any MCP-compatible AI assistant
+- 🔒 **Secure API Integration**: Properly handles authentication with the MCTS API
+- 📊 **Formatted Responses**: Provides well-structured transit information
+
+## Prerequisites
+
+- Python 3.12 or higher
+- MCTS API key (obtainable from [Milwaukee County Transit System developer portal](https://www.ridemcts.com/developers))
 
 ## Installation
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/mcts-mcp.git
+   cd mcts-mcp
+   ```
 
-## Configuration
+2. Set up a virtual environment (optional but recommended):
+   ```bash
+   python -m venv .venv
+   # On Windows
+   .\.venv\Scripts\activate
+   # On macOS/Linux
+   source .venv/bin/activate
+   ```
 
-Create a `.env` file in the project root with your MCTS API key:
+3. Install dependencies:
+   ```bash
+   pip install -e .
+   ```
 
-```
-MCTS_API_KEY=your_api_key_here
-```
-
-You can obtain an API key from the [Milwaukee County Transit System developer portal](https://www.ridemcts.com/developers).
+4. Create a `.env` file in the project root with your MCTS API key:
+   ```
+   MCTS_API_KEY=your_api_key_here
+   ```
 
 ## Usage
 
@@ -31,11 +60,26 @@ python mcts-tracker.py
 
 By default, the server uses stdio transport. You can also specify other transport methods as documented in the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk).
 
+### Configure for AI Assistants
+
+#### Claude/Cursor/VSCode Copilot
+
+```json
+  "mcts-tracker": {
+              "command": "uv",
+              "args": [
+                  "--directory",
+                  "\\path\\to\\mcts-mcp",
+                  "run",
+                  "mcts-tracker.py"
+              ],
+              "env": {
+          "MCTS_API_KEY": "your_api_key_here"
+        }
+          }
+```
+
 ### Available Tools
-
-#### Transit Tools
-**get_bus_predictions**: Get real-time arrival predictions for a specific bus stop  
-
 
 #### get_bus_predictions
 
@@ -64,20 +108,7 @@ Type: A
 Dynamic: Yes
 ```
 
-## Integration with AI Assistants
-
-This MCP server is designed to be used with AI assistants that support the Model Context Protocol. When integrated, the AI can use the `get_bus_predictions` tool to retrieve real-time bus information for users.
-
-### Example Query Flow
-
-1. User asks: "When is the next bus arriving at stop 4599?"
-2. AI assistant uses the `get_bus_predictions` tool with the stop ID "4599"
-3. The MCP server returns formatted arrival predictions
-4. AI presents this information to the user in a helpful way
-
-## Development
-
-### Project Structure
+## Server Architecture
 
 ```
 mcts-mcp/
@@ -93,21 +124,96 @@ mcts-mcp/
         └── predictions.py # Bus predictions implementation
 ```
 
+The server follows a modular architecture:
+- `mcts-tracker.py` initializes the FastMCP server and registers tool functions
+- `src/api/mcts_client.py` handles communication with the MCTS API
+- `src/tools/predictions.py` contains tool implementation and response formatting logic
+
+## Examples
+
+### AI Assistant Interaction
+
+```
+User: When is the next bus arriving at stop 4599?
+
+AI: Let me check the real-time bus predictions for stop 4599.
+
+*AI uses the get_bus_predictions tool with stop_id=4599*
+
+Based on the real-time data, the next bus arriving at WISCONSIN + WATER (stop 4599) is:
+- Route 30 (30X) heading EAST
+- Arriving in 5 minutes
+- Destination: WISCONSIN & JACKSON
+- No delays reported
+```
+
+## Development
+
+### Adding a New Tool
+
+To add a new tool to the MCP server:
+
+1. Define your tool implementation in the `src/tools` directory
+2. Import the tool in `mcts-tracker.py` 
+3. Register it using the `@mcp.tool()` decorator
+4. Write proper docstrings with parameter documentation
+
+Example:
+
+```python
+@mcp.tool()
+async def get_route_info(route_id: str) -> str:
+    """Get information about a specific bus route.
+
+    Args:
+        route_id: The ID of the bus route in Milwaukee.
+    """
+    # Implementation goes here
+    return "Route information"
+```
+
+### Testing
+
+Test your MCP server locally using the MCP CLI:
+
+```bash
+mcp execute mcts-tracker get_bus_predictions --params '{"stop_id": "4402"}'
+```
+
+This allows you to test tools without connecting an AI assistant.
+
+### Environment Variables
+
+Create a `.env` file in the root directory with these variables:
+
+```
+MCTS_API_KEY=your_api_key_here
+```
+
+## Documentation and Resources
+
+- [Model Context Protocol Specification](https://github.com/modelcontextprotocol/mcp)
+- [MCP Python SDK Documentation](https://github.com/modelcontextprotocol/python-sdk/blob/main/README.md)
+- [MCTS API Documentation](https://www.ridemcts.com/developers) (requires registration)
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Here's how you can contribute:
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a pull request
+
+Before contributing, please read the documentation-first development rule in our contributing guidelines.
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
+## Acknowledgements
 
-- [Model Context Protocol](https://github.com/modelcontextprotocol/mcp) for the framework
-- [Milwaukee County Transit System](https://www.ridemcts.com/) for the public transit API
+- Milwaukee County Transit System for providing the API
+- Model Context Protocol team for their excellent tools and documentation
+- All contributors to this project

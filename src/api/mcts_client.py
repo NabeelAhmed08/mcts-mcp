@@ -3,14 +3,22 @@ import httpx
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+try:
+    # Try to load environment variables from .env file
+    load_dotenv()
+except Exception as e:
+    print(f"Warning: Could not load .env file: {e}")
 
 # Constants for MCTS API
 MCTS_API_BASE = "https://realtime.ridemcts.com/bustime/api/v3"
 API_KEY = os.getenv("MCTS_API_KEY")  # Load API key from environment variables
 USER_AGENT = "mcts-mcp/1.0"
 
+# Check for missing API key
+if not API_KEY:
+    print("Warning: MCTS_API_KEY environment variable not found.")
+    # You should replace this with your actual API key
+    API_KEY = "YOUR_DEFAULT_API_KEY"  # Placeholder - replace with a real key
 
 async def make_mcts_request(endpoint: str, params: dict[str, Any]) -> dict[str, Any] | None:
     """Make a request to the MCTS API with error handling.
