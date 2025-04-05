@@ -131,6 +131,13 @@ The server follows a modular architecture:
 
 ## Examples
 
+### Sample Usage Output
+
+Below is an example of how the MCTS MCP server is used in Claude to fetch real-time bus predictions:
+
+
+<img src="public/mcts_mcp_usage.png" alt="Sample Usage Output" width="400">
+
 ### Demo Video
 
 Watch how the MCTS MCP server integrates with Claude:
@@ -142,7 +149,7 @@ Watch how the MCTS MCP server integrates with Claude:
     <a href="https://www.loom.com/share/8d189201556d4865beac8bd0d716bf2a">
       <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/8d189201556d4865beac8bd0d716bf2a-953709f989776c5a-full-play.gif">
     </a>
-  </div>
+</div>
 
 ### AI Assistant Interaction
 
