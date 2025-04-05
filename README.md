@@ -135,7 +135,14 @@ The server follows a modular architecture:
 
 Watch how the MCTS MCP server integrates with Claude:
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/8d189201556d4865beac8bd0d716bf2a?sid=56ead1ec-1114-445c-958e-6d3240286a70" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+<div>
+    <a href="https://www.loom.com/share/8d189201556d4865beac8bd0d716bf2a">
+      <p>Claude - 4 April 2025 - Watch Video</p>
+    </a>
+    <a href="https://www.loom.com/share/8d189201556d4865beac8bd0d716bf2a">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/8d189201556d4865beac8bd0d716bf2a-953709f989776c5a-full-play.gif">
+    </a>
+  </div>
 
 ### AI Assistant Interaction
 
