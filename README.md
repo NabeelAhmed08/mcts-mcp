@@ -131,6 +131,12 @@ The server follows a modular architecture:
 
 ## Examples
 
+### Demo Video
+
+Watch how the MCTS MCP server integrates with Claude:
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/8d189201556d4865beac8bd0d716bf2a?sid=56ead1ec-1114-445c-958e-6d3240286a70" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+
 ### AI Assistant Interaction
 
 ```
