@@ -19,7 +19,7 @@ The [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/mcp) 
 ## Prerequisites
 
 - Python 3.12 or higher
-- MCTS API key (obtainable from [Milwaukee County Transit System developer portal](https://www.ridemcts.com/developers))
+- MCTS API key (obtainable from [Milwaukee County Transit System developer portal](https://realtime.ridemcts.com/bustime/home.jsp))
 
 ## Installation
 
